@@ -139,7 +139,7 @@ const cardNumber = document.getElementById("cc-num");
 const zipCode = document.getElementById("zip");
 const cardVerif = document.getElementById("cvv");
 const form = document.querySelector('form');
-const activityCheckbox = document.getElementById('activities-box');
+const activityCheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]'); //document.getElementById('activities'); //maybe ('#activities-box');
 
 
 /*Tried to use helper function method - used form inpit validation error indications practice as reference
@@ -155,12 +155,13 @@ const isValidCvv = () => /^[0-9]{3}$/.test(cardVerif.value);
 
 //listener for whem form is submitted
 form.addEventListener('submit', (e) => {
-    e.preventDefault();
+   //e.preventDefault();
     
     /*const boxChecked = activityCheckbox.value;
     if (boxChecked !== 'clicked') {
      e.preventDefault();
     }*/
+    //const activityCheckbox = document.querySelectorAll('#activities-box');
 
      
 /*Lines 165-20 - I created a new var to store whetever user inputted and test it with my regex's 
@@ -224,7 +225,7 @@ if name inputted is not valid it will prevent form from submitting same goes for
         nameField.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        nameField.closest('label').className = "error";
+        nameField.closest('label').className = "not-valid";
         nameField.nextElementSibling.style.display = "block";
     }
    
@@ -233,7 +234,7 @@ if name inputted is not valid it will prevent form from submitting same goes for
         emailAddress.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        emailAddress.closest('label').className = "error";
+        emailAddress.closest('label').className = "not-valid";
         emailAddress.nextElementSibling.style.display = "block";
     }
 
@@ -242,7 +243,7 @@ if name inputted is not valid it will prevent form from submitting same goes for
         cardNumber.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        cardNumber.closest('label').className = "error";
+        cardNumber.closest('label').className = "not-valid";
         cardNumber.nextElementSibling.style.display = "block";
     }
 
@@ -251,7 +252,7 @@ if name inputted is not valid it will prevent form from submitting same goes for
         zipCode.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        zipCode.closest('label').className = "error";  
+        zipCode.closest('label').className = "not-valid";  
         zipCode.nextElementSibling.style.display = "block";
     }
 
@@ -260,10 +261,19 @@ if name inputted is not valid it will prevent form from submitting same goes for
         cardVerif.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        cardVerif.closest('label').className = "error";
+        cardVerif.closest('label').className = "not-valid";
         cardVerif.nextElementSibling.style.display = "block";
     }
     
+    if (totalCost === 0) {
+        e.preventDefault();
+        document.getElementById('activities-box').classList.add("not-valid");
+        document.getElementById('activites-hint').style.display = "block";
+    } else {
+        document.getElementById('activities-box').classList.remove("not-valid");
+        document.getElementById('activites-hint').style.display = "none";
+    }
+
 });
     /*if (registerActivity === '') {
         registerActivity.closest('legend').className = "valid";
@@ -288,16 +298,16 @@ if name inputted is not valid it will prevent form from submitting same goes for
 
 //9. Accessibility
 
-const activitycheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]'); //document.getElementById('activities'); //maybe ('#activities-box');
+//const activityCheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]'); //document.getElementById('activities'); //maybe ('#activities-box');
 
 //will iterate through activities list and target whichever checkbox is selected and will add the blue box/border to ensure focus
- for (let i = 0; i < activitycheckboxes.length; i++){
+ for (let i = 0; i < activityCheckboxes.length; i++){
 
-    activitycheckboxes[i].addEventListener('focus', (e) => {
+    activityCheckboxes[i].addEventListener('focus', (e) => {
 
         e.target.parentElement.classList.add('focus');
     });
-    activitycheckboxes[i].addEventListener('blur', (e) => {
+    activityCheckboxes[i].addEventListener('blur', (e) => {
         e.target.parentElement.classList.remove('focus');
     });
  }
