@@ -5,8 +5,11 @@ const nameField = document.querySelector('input[type="text"]');//or (#name) ??
 //4. Job Role section
 const jobRole = document.querySelector('select'); //getElementsByName??
 const otherJobRole = document.querySelector('#other-job-role');//'input["#other-job-role]'??
-    otherJobRole.style.display = "none";
+   
+//Hide job role input 
+otherJobRole.style.display = "none";
 
+//Show "other job" when a the 'other' option is selected 
 jobRole.addEventListener('change', (e) => {
     if (e.target.value === 'other') { // if (e.target.value === 'change')??
         otherJobRole.style.display = "block";
@@ -19,26 +22,30 @@ jobRole.addEventListener('change', (e) => {
 const shirtDesign = document.querySelector('#design');
 const shirtColor = document.querySelector('#color');
 //const colorOptions = document.querySelectorAll('#color .data-theme'); //('option[data-theme]')
-const colorOptionsList = document.getElementById('color');//unsure
-const colorOptions = colorOptionsList.children;//unsure
+//const colorOptionsList = document.getElementById('#color');//unsure
+const colorOptions = shirtColor.children;//unsure
 
+//shirtcolor is disabled until the event listener 
 shirtColor.disabled = true;
 
+//listens for change to design dropdown
 shirtDesign.addEventListener('change', (e) => {
+
+    //enables the theme options
     shirtColor.disabled = false;
+    const designSelected = e.target.value; //targets theme selected
+    
+//iterates through color options for design chosen
+    for (let i = 0; i < colorOptions.length; i++) {
+        const optionValue = colorOptions[i]; //.value or no value??
+        const dataTheme = optionValue.getAttribute("data-theme");
 
-    const colorOptions = colorOptionsList.children;
-
-    for (let i = 0; i < colorOptions.children; i++) {
-        const optionValue = colorOptions[i].value; //.value or no value??
-        const dataTheme = colorOptions[i].getAttribute(".data-theme");
-
-    if (optionValue === dataTheme) {
-        colorOptions[i].hidden = false;
-        colorOptions.setAttribute('selected', true);
-    } else { //if (optionValue !== dataTheme)
-        colorOptions[i].hidden = true;
-        colorOptions.removeAttribute('selected');
+    if (dataTheme === designSelected) {
+        optionValue.hidden = false;
+        optionValue.setAttribute('selected', true);
+    } else if (dataTheme !== optionValue){ //if (optionValue !== dataTheme)
+        optionValue.hidden = true;
+        optionValue.removeAttribute('selected');
        
     }
     }
@@ -53,12 +60,15 @@ let totalCost = 0; //REMINDER when a digit will be changing (in this case the to
     //console.log(registerActivity)
     //console.log(payTotal)
 
+//listens for change in checkboxes of register for activities
 registerActivity.addEventListener('change', (e) => {
+    //will target te cost of whicever activity clicked
     const dataCost = +e.target.getAttribute('data-cost');
-    //const dataCost = +payTotal.getAttribute('data-cost');//maybe payTotal.getAttr
-    //console.log(dataCost)
-   // console.log(typeof dataCost)
+            //const dataCost = +payTotal.getAttribute('data-cost');//maybe payTotal.getAttr
+            //console.log(dataCost)
+            // console.log(typeof dataCost)
 
+    //if activity checked it will add its value/cost to the total
     if (e.target.checked) { //maybe??e.target.checked === true;
         totalCost += dataCost; //(e.target.checked) ? dataCost++ : totalCost--;
     } else {
@@ -68,6 +78,7 @@ registerActivity.addEventListener('change', (e) => {
     //console.log('Total:', totalCost)
     //console.log('checked or not?', e.target.checked)
 
+    //displays total
     payTotal.innerHTML = `Total: $${totalCost}`;
 
 });
@@ -79,16 +90,18 @@ const creditCard = document.getElementById('credit-card');
 const payPal = document.getElementById('paypal');
 const bitCoin = document.getElementById('bitcoin');
 
+//will only display "i'm going to pay with" option and hide cc, bitcoin, and cc 
+paymentMethod.children[0].setAttribute('selected', true);
 payPal.style.display = 'none';
 bitCoin.style.display = 'none';
+creditCard.style.display = 'none';
 
-paymentMethod.children[1].setAttribute('selected', true);
-
+//listener for a selected payment method
 paymentMethod.addEventListener('change', (e) => {
-    //e.target.value = 'true';
-    creditCard.style.display = 'none'; //creditCard.selected = 'true';
-    payPal.style.display = 'none';  //payPal.selected = 'true';
-    bitCoin.style.display = 'none'; //bitCoin.selected = 'true';
+
+    payPal.style.display = 'none';
+    bitCoin.style.display = 'none';
+    creditCard.style.display = 'none';
 
     /*if (e.target.value === paymentMethod) {
         creditCard.style.display = 'block'; //traversal
@@ -116,9 +129,9 @@ console.log(bitCoin)*/
 
 //8. Form validation
 
-//variables already created
+//variables already created previously
 //const nameField = document.querySelector('input[type="text"]');
-//onst registerActivity = document.querySelector('#activities');
+//const registerActivity = document.querySelector('#activities');
 
 //new variables created
 const emailAddress = document.getElementById("email");
@@ -126,9 +139,12 @@ const cardNumber = document.getElementById("cc-num");
 const zipCode = document.getElementById("zip");
 const cardVerif = document.getElementById("cvv");
 const form = document.querySelector('form');
+const activityCheckbox = document.getElementById('activities-box');
 
-/*const isValidName = () => /^[a-z]+$/i.test(nameField.value);
-//const isValidActivity = () => e.target.getAttribute('data-cost');
+
+/*Tried to use helper function method - used form inpit validation error indications practice as reference
+const isValidName = () => /^[a-z]+$/i.test(nameField.value);
+const isValidActivity = () => e.target.getAttribute('data-cost');
 const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailAddress.value);
 const isValidCardNum = () => /^[0-9]{16}$/.test(cardNumber.value);
 const isValidZip = () => /^[0-9]{5}$/.test(zipCode.value);
@@ -136,14 +152,24 @@ const isValidCvv = () => /^[0-9]{3}$/.test(cardVerif.value);
 //const isValidform = () => //.test(form.value);
 */
 
+
+//listener for whem form is submitted
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    
+    /*const boxChecked = activityCheckbox.value;
+    if (boxChecked !== 'clicked') {
+     e.preventDefault();
+    }*/
+
+     
+/*Lines 165-20 - I created a new var to store whetever user inputted and test it with my regex's 
+if name inputted is not valid it will prevent form from submitting same goes for all ofther if statments in this listener*/
 
     const nameValue = nameField.value;
-    const isValidName = /^[a-z]+$/i.test(nameValue);
+    const isValidName = /^[a-zA-Z\s]+$/i.test(nameValue);
     console.log(nameValue)
     console.log(isValidName)
-
     if (isValidName === false) {
         e.preventDefault();
         
@@ -159,7 +185,7 @@ form.addEventListener('submit', (e) => {
     }
 
     const cardValue = cardNumber.value;
-    const isValidCardNum = /^[0-9]{16}$/.test(cardValue);
+    const isValidCardNum = /^[0-9]{13,16}$/.test(cardValue);
     console.log(cardValue)
     console.log(isValidCardNum)
 
@@ -185,22 +211,16 @@ form.addEventListener('submit', (e) => {
         e.preventDefault();
     }
 
-    
-   /* 
-   the following code is for 'register for activities' section
-   const activityChecked = registerActivity.value;
-    if (e.target.checked === 'checkbox') {
-    }
+  
+
+    //NOTE: use - DOM manipulation: form validaton practice as guidance
+    /* - Below I am taking my regex variable (which tests if user input matches my regex)
+       - closest('label') ensures users can click anywhere in the specified label but it means that it will select the closest parent label element
+       - if no selection or input has been made by the user it will let them know at the time of submission
+       - the nextElement Sibling will target the span(sibling) that follows the selected element in the HTML doc and display whatever error message in the span element
     */
-
-
-
-    //let nameInputVal = nameField.value;
-    //let regex = /^[a-z]$/i;
-    //let regexName = /^[a-z]$/i;
-    
     if (isValidName) {
-        nameField.closest('label').className = "valid";
+        nameField.closest('label').className = "valid";     //classList.add("valid");
         nameField.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
@@ -208,24 +228,8 @@ form.addEventListener('submit', (e) => {
         nameField.nextElementSibling.style.display = "block";
     }
    
-    /*if (regexName.test(nameInputVal)) {
-        regexName === true;
-    } else {
-        regexName === false;
-    }
-    */
-//NOTE: use - DOM manipulation: form validaton as guidance
-    /*if (isValidActivity()) {
-        registerActivity.closest('label').className = "valid";
-        registerActivity.nextElementSibling.style.display = "none";
-    } else {
-        e.preventDefault();
-        registerActivity.closest('label').className = "error";
-        registerActivity.nextElementSibling.style.display = "block";
-    }
-    */
     if (isValidEmail) {
-        emailAddress.closest('label').className = "valid";
+        emailAddress.closest('label').className = "valid"; //green check
         emailAddress.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
@@ -234,7 +238,7 @@ form.addEventListener('submit', (e) => {
     }
 
     if (isValidCardNum) {
-        cardNumber.closest('label').className = "valid";
+        cardNumber.closest('label').className = "valid"; 
         cardNumber.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
@@ -243,58 +247,76 @@ form.addEventListener('submit', (e) => {
     }
 
     if (isValidZip) {
-        zipCode.closest('label').className = "valid";
+        zipCode.closest('label').className = "valid"; 
         zipCode.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        zipCode.closest('label').className = "error";
+        zipCode.closest('label').className = "error";  
         zipCode.nextElementSibling.style.display = "block";
     }
 
     if (isValidCvv) {
-        cardVerif.closest('label').className = "valid";
+        cardVerif.closest('label').className = "valid"; 
         cardVerif.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
         cardVerif.closest('label').className = "error";
         cardVerif.nextElementSibling.style.display = "block";
     }
+    
+});
+    /*if (registerActivity === '') {
+        registerActivity.closest('legend').className = "valid";
+        registerActivity.nextElementSibling.style.display = "none";
+    } else {
+        e.preventDefault();
+        registerActivity.closest('label').className = "error";
+        registerActivity.nextElementSibling.style.display = "block";
+    }
+    */    
 
-    /*if (isValidform()) {
+    /* if (form) {
         form.closest('label').className = "valid";
         form.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
         form.closest('label').className = "error";
         form.nextElementSibling.style.display = "block";
-    }
-    */
+    }*/
+    
 
 
 //9. Accessibility
 
-const activityType = document.querySelectorAll('#activities-box input[type="checkbox"]'); //document.getElementById('activities'); //maybe ('#activities-box');
-    console.log(activityType)
+const activitycheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]'); //document.getElementById('activities'); //maybe ('#activities-box');
 
- for (let i = 0; i < activityType.length; i++) {
-    activityType[i].addEventListener('focus', () => {
-        activityType[i].classList.add('focus');
-    });
-    activityType[i].addEventListener('blur', () => {
-        activityType[i].classList.remove('focus');
-    });
-}
+//will iterate through activities list and target whichever checkbox is selected and will add the blue box/border to ensure focus
+ for (let i = 0; i < activitycheckboxes.length; i++){
 
-if (nameValue === '') {
-    nameField.className.add('not-valid');
-    nameField.className.remove('valid');
-    nameField.lastElementChild.style.display = 'none';
+    activitycheckboxes[i].addEventListener('focus', (e) => {
+
+        e.target.parentElement.classList.add('focus');
+    });
+    activitycheckboxes[i].addEventListener('blur', (e) => {
+        e.target.parentElement.classList.remove('focus');
+    });
+ }
+
+/*if ("form-hint") {
+    //e.preventDefault();
+    parentElement.className.add('not-valid');
+    parentElement.className.remove('valid');
+    lastElementChild
+
+    nameField.lastElementChild.style.display = 'block';
 } else {
-    nameField.className.add('valid');
-    nameField.className.remove('not-valid');
-    nameField.lastElementChild.style.display = 'block'
-}
-});
+    parentElement.className.add('valid');
+    parentElement.className.remove('not-valid');
 
+}
+
+parentElement.className('form');
+
+*/
 
 
