@@ -94,7 +94,7 @@ const bitCoin = document.getElementById('bitcoin');
 paymentMethod.children[0].setAttribute('selected', true);
 payPal.style.display = 'none';
 bitCoin.style.display = 'none';
-creditCard.style.display = 'none';
+//creditCard.style.display = 'none';
 
 //listener for a selected payment method
 paymentMethod.addEventListener('change', (e) => {
@@ -169,49 +169,72 @@ if name inputted is not valid it will prevent form from submitting same goes for
 
     const nameValue = nameField.value;
     const isValidName = /^[a-zA-Z\s]+$/i.test(nameValue);
-    console.log(nameValue)
-    console.log(isValidName)
-    if (isValidName === false) {
+    if (!isValidName) {
         e.preventDefault();
-        
-    } 
+        nameField.closest('label').classList.add("not-valid");    
+        nameField.closest('label').classList.remove("valid");
+        nameField.nextElementSibling.style.display = "block";
+    } else {
+        nameField.closest('label').classList.add("valid");
+        nameField.closest('label').classList.remove("not-valid");
+        nameField.nextElementSibling.style.display = "none";
+    }
 
     const emailValue = emailAddress.value;
     const isValidEmail = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
-    console.log(emailValue)
-    console.log(isValidEmail)
-
-    if (isValidEmail === false) {
+    if (!isValidEmail) {
         e.preventDefault();
+        emailAddress.closest('label').classList.add("not-valid");
+        emailAddress.closest('label').classList.remove("valid"); //red check icon
+        emailAddress.nextElementSibling.style.display = "block";
+    } else {
+        emailAddress.closest('label').classList.add("valid");
+        emailAddress.closest('label').classList.remove("not-valid"); //green error icon
+        emailAddress.nextElementSibling.style.display = "none";
     }
+
+    if (paymentMethod.value === "credit-card") {
 
     const cardValue = cardNumber.value;
     const isValidCardNum = /^[0-9]{13,16}$/.test(cardValue);
-    console.log(cardValue)
-    console.log(isValidCardNum)
-
-    if (isValidCardNum === false) {
+    if (!isValidCardNum) {
         e.preventDefault();
+        cardNumber.closest('label').classList.add("not-valid");
+        cardNumber.closest('label').classList.remove("valid");
+        cardNumber.nextElementSibling.style.display = "block";
+    } else {
+        cardNumber.closest('label').classList.remove("valid");
+        cardNumber.closest('label').classList.add("not-valid");
+        cardNumber.nextElementSibling.style.display = "none";
     }
 
     const zipValue = zipCode.value;
     const isValidZip = /^[0-9]{5}$/.test(zipValue);
-    console.log(zipValue)
-    console.log(isValidZip)
-
-    if (isValidZip === false) {
+    if (!isValidZip) {
         e.preventDefault();
+        zipCode.closest('label').classList.add("not-valid");
+        zipCode.closest('label').classList.remove("valid");
+        zipCode.nextElementSibling.style.display = "block";
+    } else {
+        zipCode.closest('label').classList.add("valid");
+        zipCode.closest('label').classList.remove("not-valid");
+        zipCode.nextElementSibling.style.display = "none";
     }
 
     const cardVerifVal = cardVerif.value;
     const isValidCvv = /^[0-9]{3}$/.test(cardVerifVal);
-    console.log(cardVerifVal)
-    console.log(isValidCvv)
-
-    if (isValidCvv === false) {
+    if (!isValidCvv) {
         e.preventDefault();
+        cardVerif.closest('label').classList.add("not-valid");
+        cardVerif.closest('label').classList.remove("valid");
+        cardVerif.nextElementSibling.style.display = "block";
+    } else {
+        cardVerif.closest('label').classList.add("valid");
+        cardVerif.closest('label').classList.remove("not-valid");
+        cardVerif.nextElementSibling.style.display = "none";
     }
-
+    
+} 
   
 
     //NOTE: use - DOM manipulation: form validaton practice as guidance
@@ -220,61 +243,20 @@ if name inputted is not valid it will prevent form from submitting same goes for
        - if no selection or input has been made by the user it will let them know at the time of submission
        - the nextElement Sibling will target the span(sibling) that follows the selected element in the HTML doc and display whatever error message in the span element
     */
-    if (isValidName) {
-        nameField.closest('label').classList.remove("not-valid");     //classList.add("valid");
-        nameField.closest('label').classList.add("valid");
-        nameField.nextElementSibling.style.display = "none";
-    } else {
-        e.preventDefault();
-        nameField.closest('label').classList.remove("valid");
-        nameField.closest('label').classList.add("not-valid");
-        nameField.nextElementSibling.style.display = "block";
-    }
    
-    if (isValidEmail) {
-        emailAddress.closest('label').classList.remove("not-valid");
-        emailAddress.closest('label').classList.add("valid"); //green check icon
-        emailAddress.nextElementSibling.style.display = "none";
-    } else {
-        e.preventDefault();
-        emailAddress.closest('label').classList.remove("valid");
-        emailAddress.closest('label').classList.add("not-valid"); //red error icon
-        emailAddress.nextElementSibling.style.display = "block";
-    }
 
-    if (isValidCardNum) {
-        cardNumber.closest('label').classList.remove("not-valid");
-        cardNumber.closest('label').classList.add("valid");
-        cardNumber.nextElementSibling.style.display = "none";
-    } else {
-        e.preventDefault();
-        cardNumber.closest('label').classList.remove("valid");
-        cardNumber.closest('label').classList.add("not-valid");
-        cardNumber.nextElementSibling.style.display = "block";
-    }
 
-    if (isValidZip) {
-        zipCode.closest('label').classList.remove("not-valid");
-        zipCode.closest('label').classList.add("valid");
-        zipCode.nextElementSibling.style.display = "none";
-    } else {
-        e.preventDefault();
-        zipCode.closest('label').classList.remove("valid");
-        zipCode.closest('label').classList.add("not-valid");
-        zipCode.nextElementSibling.style.display = "block";
-    }
 
-    if (isValidCvv) {
-        //cardVerif.closest('label').className = "valid"; 
-        cardVerif.closest('label').classList.remove("not-valid");
-        cardVerif.closest('label').classList.add("valid");
-        cardVerif.nextElementSibling.style.display = "none";
+    /*if (payPal) {
+        payPal.closest('label').classList.remove("not-valid");
+        payPal.closest('label').classList.add("valid");
+        payPal.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        cardVerif.closest('label').classList.remove("valid");
-        cardVerif.closest('label').classList.add("not-valid");
-        cardVerif.nextElementSibling.style.display = "block";
-    }
+        payPal.closest('label').classList.remove("valid");
+        payPal.closest('label').classList.add("not-valid");
+        payPal.nextElementSibling.style.display = "block";
+    }*/
     
     if (totalCost === 0) {
         e.preventDefault();
