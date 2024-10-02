@@ -91,7 +91,7 @@ const payPal = document.getElementById('paypal');
 const bitCoin = document.getElementById('bitcoin');
 
 //will only display "i'm going to pay with" option and hide cc, bitcoin, and cc 
-paymentMethod.children[0].setAttribute('selected', true);
+paymentMethod.children[1].setAttribute('selected', true);
 payPal.style.display = 'none';
 bitCoin.style.display = 'none';
 //creditCard.style.display = 'none';
