@@ -216,63 +216,77 @@ if name inputted is not valid it will prevent form from submitting same goes for
 
     //NOTE: use - DOM manipulation: form validaton practice as guidance
     /* - Below I am taking my regex variable (which tests if user input matches my regex)
-       - closest('label') ensures users can click anywhere in the specified label but it means that it will select the closest parent label element
+       - closest('label') ensures users can click anywhere in the specified activity but it means that it will select the closest parent label element
        - if no selection or input has been made by the user it will let them know at the time of submission
        - the nextElement Sibling will target the span(sibling) that follows the selected element in the HTML doc and display whatever error message in the span element
     */
     if (isValidName) {
-        nameField.closest('label').className = "valid";     //classList.add("valid");
+        nameField.closest('label').classList.remove("not-valid");     //classList.add("valid");
+        nameField.closest('label').classList.add("valid");
         nameField.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        nameField.closest('label').className = "not-valid";
+        nameField.closest('label').classList.remove("valid");
+        nameField.closest('label').classList.add("not-valid");
         nameField.nextElementSibling.style.display = "block";
     }
    
     if (isValidEmail) {
-        emailAddress.closest('label').className = "valid"; //green check
+        emailAddress.closest('label').classList.remove("not-valid");
+        emailAddress.closest('label').classList.add("valid"); //green check icon
         emailAddress.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        emailAddress.closest('label').className = "not-valid";
+        emailAddress.closest('label').classList.remove("valid");
+        emailAddress.closest('label').classList.add("not-valid"); //red error icon
         emailAddress.nextElementSibling.style.display = "block";
     }
 
     if (isValidCardNum) {
-        cardNumber.closest('label').className = "valid"; 
+        cardNumber.closest('label').classList.remove("not-valid");
+        cardNumber.closest('label').classList.add("valid");
         cardNumber.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        cardNumber.closest('label').className = "not-valid";
+        cardNumber.closest('label').classList.remove("valid");
+        cardNumber.closest('label').classList.add("not-valid");
         cardNumber.nextElementSibling.style.display = "block";
     }
 
     if (isValidZip) {
-        zipCode.closest('label').className = "valid"; 
+        zipCode.closest('label').classList.remove("not-valid");
+        zipCode.closest('label').classList.add("valid");
         zipCode.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        zipCode.closest('label').className = "not-valid";  
+        zipCode.closest('label').classList.remove("valid");
+        zipCode.closest('label').classList.add("not-valid");
         zipCode.nextElementSibling.style.display = "block";
     }
 
     if (isValidCvv) {
-        cardVerif.closest('label').className = "valid"; 
+        //cardVerif.closest('label').className = "valid"; 
+        cardVerif.closest('label').classList.remove("not-valid");
+        cardVerif.closest('label').classList.add("valid");
         cardVerif.nextElementSibling.style.display = "none";
     } else {
         e.preventDefault();
-        cardVerif.closest('label').className = "not-valid";
+        cardVerif.closest('label').classList.remove("valid");
+        cardVerif.closest('label').classList.add("not-valid");
         cardVerif.nextElementSibling.style.display = "block";
     }
     
     if (totalCost === 0) {
         e.preventDefault();
-        document.getElementById('activities-box').classList.add("not-valid");
-        document.getElementById('activites-hint').style.display = "block";
+        registerActivity.classList.remove("valid");//ALSO TRIED THIS registerActivity.closest('label').className = "not-valid";
+        registerActivity.classList.add("not-valid");
+        document.getElementById('activities-hint').style.display = "block";  //egisterActivity.nextElementSibling.style.display = "block";
     } else {
-        document.getElementById('activities-box').classList.remove("not-valid");
-        document.getElementById('activites-hint').style.display = "none";
+        registerActivity.classList.remove("not-valid");
+        registerActivity.classList.add("valid");  //ALSO TRIED THIS registerActivity.closest('label').className = "valid"; 
+        document.getElementById('activities-hint').style.display = "none"; //registerActivity.nextElementSibling.style.display = "none";
     }
+
 
 });
     /*if (registerActivity === '') {
